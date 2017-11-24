@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
+import org.openqa.selenium.By;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -25,6 +25,9 @@ public class BasePageTests {
     private DesiredCapabilities capabilities;
     private String remoteDriverUrl = p.read("selenium.hubUrl");
     private String googleUrl = p.read("google.urlHome");
+    private String googleSearchBoxById = p.read("google.searchBoxById");
+    private String googleSearchTerm = p.read("google.searchTerm");
+    private long timeoutInSecond = Long.parseLong(p.read("selenium.timeout"), 10);
 
 
     @Test
@@ -43,9 +46,21 @@ public class BasePageTests {
     public void checkLoadPage() throws MalformedURLException {
         capabilities = DesiredCapabilities.chrome();
         RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
-        BasePage bp = new BasePage();
-        logger.info(bp.loadPage(driver,  googleUrl));
+        BasePage bp = new BasePage(driver,timeoutInSecond );
+        logger.info(bp.loadPage(googleUrl));
         driver.quit();
     }
+
+    @Test
+    public void checkFillFieldBy()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver,timeoutInSecond );
+        logger.info(bp.loadPage(googleUrl));
+        logger.info(bp.fillFieldBy(googleSearchTerm,By.id(googleSearchBoxById)));
+        driver.quit();
+    }
+
 
 }
