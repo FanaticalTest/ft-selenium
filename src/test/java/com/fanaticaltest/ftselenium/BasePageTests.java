@@ -20,11 +20,10 @@ import static org.hamcrest.Matchers.containsString;
 @SpringBootTest
 public class BasePageTests {
 
-    private DesiredCapabilities capabilities;
-    private String remoteDriverUrl = "http://docker.sak:4444/wd/hub";
-    private final Logger logger = LoggerFactory.getLogger(BasePageTests.class);
-    //private static String googleUrl = "http://www.google.com";
     private Property p = new Property("./src/main/resources/application.properties");
+    private final Logger logger = LoggerFactory.getLogger(BasePageTests.class);
+    private DesiredCapabilities capabilities;
+    private String remoteDriverUrl = p.read("selenium.hubUrl");
     private String googleUrl = p.read("google.urlHome");
 
 
