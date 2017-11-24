@@ -3,7 +3,7 @@ package com.fanaticaltest.ftselenium;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class BasePage {
 
     public BasePage() {}

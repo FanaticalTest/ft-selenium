@@ -44,3 +44,8 @@ dependencies {
 	testCompile("org.seleniumhq.selenium:selenium-support:${seleniumVersion}")
 	testCompile("com.fanaticaltest:ft-config:${ftConfigVersion}")
 }
+
+
+springBoot {
+	mainClass = "com.fanaticaltest.ftselenium.BasePage"
+}
