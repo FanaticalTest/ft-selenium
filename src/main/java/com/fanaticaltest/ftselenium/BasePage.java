@@ -10,14 +10,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class BasePage {
 
-    private long timeout_in_second;
+    private long timeoutInSecond;
     private RemoteWebDriver driver;
+
+    public void setTimeoutInSecond(long timeoutInSecond) {
+        this.timeoutInSecond = timeoutInSecond;
+    }
 
     public BasePage() {}
 
-    public BasePage(RemoteWebDriver driver, long timeout_in_second) {
-        this.timeout_in_second = timeout_in_second;
+    public BasePage(RemoteWebDriver driver, long timeoutInSecond) {
+        this.timeoutInSecond = timeoutInSecond;
         this.driver = driver;
+    }
+
+    public BasePage(RemoteWebDriver driver) {
+        this.driver = driver;
+        this.timeoutInSecond = 20L;
     }
 
     public enum browserNameOS {CHROME_PC, FIREFOX_PC, CHROME_MAC, FIREFOX_MAC, CHROME_LINUX, FIREFOX_LINUX, IEXPLORER_PC}
@@ -36,9 +45,15 @@ public class BasePage {
     }
 
     public String fillFieldBy(String value, By by) {
-        WebElement field = findElement(by, timeout_in_second);
+        WebElement field = findElement(by, timeoutInSecond);
         field.clear();
         field.sendKeys(value);
         return ("Filled field with : " + value);
+    }
+
+    public String clickElementBy(By by) {
+        WebElement elem = findElement(by, timeoutInSecond);
+        elem.click();
+        return("Clicked on element : "+ by.toString());
     }
 }

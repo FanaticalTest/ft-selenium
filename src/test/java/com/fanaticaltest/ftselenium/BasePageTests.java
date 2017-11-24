@@ -25,7 +25,8 @@ public class BasePageTests {
     private DesiredCapabilities capabilities;
     private String remoteDriverUrl = p.read("selenium.hubUrl");
     private String googleUrl = p.read("google.urlHome");
-    private String googleSearchBoxById = p.read("google.searchBoxById");
+    private String googleSearchBox = p.read("google.searchBox");
+    private String googleButtonSignin = p.read("google.buttonSignin");
     private String googleSearchTerm = p.read("google.searchTerm");
     private long timeoutInSecond = Long.parseLong(p.read("selenium.timeout"), 10);
 
@@ -58,9 +59,20 @@ public class BasePageTests {
         RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
         BasePage bp = new BasePage(driver,timeoutInSecond );
         logger.info(bp.loadPage(googleUrl));
-        logger.info(bp.fillFieldBy(googleSearchTerm,By.id(googleSearchBoxById)));
+        logger.info(bp.fillFieldBy(googleSearchTerm,By.id(googleSearchBox)));
         driver.quit();
     }
 
+    @Test
+    public void checkClickElementBy()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        bp.setTimeoutInSecond(30L);
+        logger.info(bp.loadPage(googleUrl));
+        logger.info(bp.clickElementBy(By.id(googleButtonSignin)));
+        driver.quit();
+    }
 
 }
