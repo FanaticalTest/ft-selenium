@@ -7,6 +7,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Component;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 @Component
 public class BasePage {
 
@@ -17,7 +20,13 @@ public class BasePage {
         this.timeoutInSecond = timeoutInSecond;
     }
 
-    public BasePage() {}
+    public void setDriver(RemoteWebDriver driver) {
+        this.driver = driver;
+    }
+
+    public BasePage() {
+        this.timeoutInSecond = 20L;
+    }
 
     public BasePage(RemoteWebDriver driver, long timeoutInSecond) {
         this.timeoutInSecond = timeoutInSecond;
@@ -29,14 +38,21 @@ public class BasePage {
         this.timeoutInSecond = 20L;
     }
 
-    public enum browserNameOS {CHROME_PC, FIREFOX_PC, CHROME_MAC, FIREFOX_MAC, CHROME_LINUX, FIREFOX_LINUX, IEXPLORER_PC}
-
-    public WebElement waitUntilVisible(final By by, long timeoutInSeconds) {
-        return new WebDriverWait(driver, timeoutInSeconds).until(ExpectedConditions.visibilityOfElementLocated(by));
+    public WebElement waitUntilVisible(final By by) {
+        return new WebDriverWait(driver, timeoutInSecond).until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
-    public WebElement findElement(By by, long timeoutInSeconds) {
-        return waitUntilVisible(by, timeoutInSeconds);
+    public WebElement findElement(By by) {
+        return waitUntilVisible(by);
+    }
+
+    public void waitForUrlRedirect(String url) {
+        (new WebDriverWait(driver, timeoutInSecond)).until(ExpectedConditions.urlContains(url));
+    }
+
+    public boolean waitForText(By by, String value)
+    {
+        return new WebDriverWait(driver, timeoutInSecond).until(ExpectedConditions.textToBePresentInElementLocated(by, value));
     }
 
     public String loadPage(String urlWebsite) {
@@ -45,15 +61,41 @@ public class BasePage {
     }
 
     public String fillFieldBy(String value, By by) {
-        WebElement field = findElement(by, timeoutInSecond);
+        WebElement field = findElement(by);
         field.clear();
         field.sendKeys(value);
         return ("Filled field with : " + value);
     }
 
     public String clickElementBy(By by) {
-        WebElement elem = findElement(by, timeoutInSecond);
+        WebElement elem = findElement(by);
         elem.click();
         return("Clicked on element : "+ by.toString());
+    }
+
+    public String assertPageTitle(String title, String url) {
+        waitForUrlRedirect(url);
+        assertThat(driver.getTitle(), containsString(title));
+        return ("Assert page url :" + url + " contains " + title);
+    }
+
+    public String assertTextInElementBy(String value, By by) {
+        WebElement elem = findElement(by);
+        assertThat(elem.getText(), containsString(value));
+        return ("Assert text in element " + by + " the value : " + value);
+    }
+
+    public String waitAndAssertTextInElementBy(String value, By by)
+    {
+        WebElement elem = findElement(by);
+        if (waitForText(by,value))
+            assertThat(elem.getText(), containsString(value));
+        return ("Wait element " + by + " and assert in the field the value : " + value);
+    }
+
+    public String assertAttributeInElementBy(String attributeName, String value, By by) {
+        WebElement elem = findElement(by);
+        assertThat(elem.getAttribute(attributeName), containsString(value));
+        return ("Assert Attribute name " + attributeName + " in element " + by + " the value " + value);
     }
 }

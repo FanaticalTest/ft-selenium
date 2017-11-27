@@ -13,8 +13,6 @@ import org.openqa.selenium.By;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,31 +22,24 @@ public class BasePageTests {
     private final Logger logger = LoggerFactory.getLogger(BasePageTests.class);
     private DesiredCapabilities capabilities;
     private String remoteDriverUrl = p.read("selenium.hubUrl");
-    private String googleUrl = p.read("google.urlHome");
-    private String googleSearchBox = p.read("google.searchBox");
-    private String googleButtonSignin = p.read("google.buttonSignin");
-    private String googleSearchTerm = p.read("google.searchTerm");
     private long timeoutInSecond = Long.parseLong(p.read("selenium.timeout"), 10);
-
-
-    @Test
-    public void checkEnum()
-    {
-        assertThat(BasePage.browserNameOS.CHROME_PC.toString(),containsString("CHROME_PC"));
-        assertThat(BasePage.browserNameOS.FIREFOX_PC.toString(),containsString("FIREFOX_PC"));
-        assertThat(BasePage.browserNameOS.CHROME_MAC.toString(),containsString("CHROME_MAC"));
-        assertThat(BasePage.browserNameOS.FIREFOX_MAC.toString(),containsString("FIREFOX_MAC"));
-        assertThat(BasePage.browserNameOS.FIREFOX_LINUX.toString(),containsString("FIREFOX_LINUX"));
-        assertThat(BasePage.browserNameOS.IEXPLORER_PC.toString(),containsString("IEXPLORER_PC"));
-        assertThat(BasePage.browserNameOS.CHROME_LINUX.toString(),containsString("CHROME_LINUX"));
-    }
+    private String ftdemoUrl = p.read("ftdemo.urlHome");
+    private String ftdemoHomeTitle = p.read("ftdemo.homeTitle");
+    private String linkLogin= p.read("ftdemo.linkLogin");
+    private String usernameValue = p.read("ftdemo.usernameValue");
+    private String passwordValue = p.read("ftdemo.passwordValue");
+    private String usernameField = p.read("ftdemo.usernameField");
+    private String passwordField = p.read("ftdemo.passwordField");
+    private String submitLogin = p.read("ftdemo.submitLogin");
+    private String loginValidatorField = p.read("ftdemo.loginValidatorField");
+    private String valueWrongCredential = p.read("ftdemo.valueWrongCredential");
 
     @Test
     public void checkLoadPage() throws MalformedURLException {
         capabilities = DesiredCapabilities.chrome();
         RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
         BasePage bp = new BasePage(driver,timeoutInSecond );
-        logger.info(bp.loadPage(googleUrl));
+        logger.info(bp.loadPage(ftdemoUrl));
         driver.quit();
     }
 
@@ -57,9 +48,12 @@ public class BasePageTests {
     {
         capabilities = DesiredCapabilities.chrome();
         RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
-        BasePage bp = new BasePage(driver,timeoutInSecond );
-        logger.info(bp.loadPage(googleUrl));
-        logger.info(bp.fillFieldBy(googleSearchTerm,By.id(googleSearchBox)));
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkLogin)));
+        logger.info(bp.fillFieldBy(usernameValue,By.id(usernameField)));
+        logger.info(bp.fillFieldBy(passwordValue,By.id(passwordField)));
+        logger.info(bp.clickElementBy(By.id(submitLogin)));
         driver.quit();
     }
 
@@ -68,11 +62,49 @@ public class BasePageTests {
     {
         capabilities = DesiredCapabilities.chrome();
         RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
-        BasePage bp = new BasePage(driver);
+        BasePage bp = new BasePage();
         bp.setTimeoutInSecond(30L);
-        logger.info(bp.loadPage(googleUrl));
-        logger.info(bp.clickElementBy(By.id(googleButtonSignin)));
+        bp.setDriver(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.assertPageTitle(ftdemoHomeTitle,ftdemoUrl));
         driver.quit();
     }
 
+    @Test
+    public void checkTextInField()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkLogin)));
+        logger.info(bp.clickElementBy(By.id(submitLogin)));
+        logger.info(bp.assertTextInElementBy(valueWrongCredential,By.id(loginValidatorField)));
+        driver.quit();
+    }
+
+    @Test
+    public void checkWaitTextInField()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkLogin)));
+        logger.info(bp.clickElementBy(By.id(submitLogin)));
+        logger.info(bp.waitAndAssertTextInElementBy(valueWrongCredential,By.id(loginValidatorField)));
+        driver.quit();
+    }
+
+    @Test
+    public  void checkAssertAttributeInElementBy()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkLogin)));
+        logger.info(bp.assertAttributeInElementBy("value","Login", By.id(submitLogin)));
+        driver.quit();
+    }
 }
