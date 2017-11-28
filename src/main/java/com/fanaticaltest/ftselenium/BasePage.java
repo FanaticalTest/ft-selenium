@@ -12,6 +12,7 @@ import org.openqa.selenium.OutputType;
 import org.apache.commons.io.FileUtils;
 import java.text.SimpleDateFormat;
 import java.sql.Timestamp;
+import org.openqa.selenium.support.ui.Select;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -117,5 +118,11 @@ public class BasePage {
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(scrFile, new File(screenshotPath + pngFileName));
         return ("Screenshot taken " + screenshotPath + pngFileName);
+    }
+
+    public String selectDropDownByValue(By by, String value){
+        Select select = new Select(findElement(by));
+        select.selectByValue(value);
+        return ("Value selected is " + value);
     }
 }

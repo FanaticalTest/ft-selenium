@@ -79,9 +79,15 @@ bp.waitUntilActive(By.id("field-id-name"));
 ```
 
 ### Get screenshot
-You can call the method when it requires. Let assume you want to store the picture in the test resources folder. 
+You can call the method when it requires. Let assume you want to store the picture in the test resources folder. The file name will contains a timestamp.
 ```
 BasePage bp = new BasePage(driver);
 bp.getScreenshot("./src/test/resources/");
 ```
 
+### Select a value in a dropdown
+Select an item in the dropdown based on the value.
+```
+BasePage bp = new BasePage(driver);
+bp.selectDropDownByValue(By.id("qt-selector"),"2";
+```

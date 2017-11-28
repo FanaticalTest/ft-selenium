@@ -25,7 +25,8 @@ public class BasePageTests {
     private long timeoutInSecond = Long.parseLong(p.read("selenium.timeout"), 10);
     private String ftdemoUrl = p.read("ftdemo.urlHome");
     private String ftdemoHomeTitle = p.read("ftdemo.homeTitle");
-    private String linkLogin= p.read("ftdemo.linkLogin");
+    private String linkLogin = p.read("ftdemo.linkLogin");
+    private String linkShopping = p.read("ftdemo.linkShopping");
     private String usernameValue = p.read("ftdemo.usernameValue");
     private String passwordValue = p.read("ftdemo.passwordValue");
     private String usernameField = p.read("ftdemo.usernameField");
@@ -34,6 +35,7 @@ public class BasePageTests {
     private String loginValidatorField = p.read("ftdemo.loginValidatorField");
     private String valueWrongCredential = p.read("ftdemo.valueWrongCredential");
     private String screenshotPath = p.read("selenium.screenshotPath");
+    private String dropDownQtSelector = p.read("ftdemo.dropDownQtSelector");
 
 
     @Test
@@ -135,6 +137,18 @@ public class BasePageTests {
         } catch (Exception e) {
             logger.info("Screenshot error" + e.toString());
         }
+        driver.quit();
+    }
+
+    @Test
+    public void checkDropDown()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkShopping)));
+        logger.info(bp.selectDropDownByValue(By.id(dropDownQtSelector),"2"));
         driver.quit();
     }
 }
