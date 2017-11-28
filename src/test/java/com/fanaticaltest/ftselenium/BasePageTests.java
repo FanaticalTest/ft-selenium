@@ -33,6 +33,8 @@ public class BasePageTests {
     private String submitLogin = p.read("ftdemo.submitLogin");
     private String loginValidatorField = p.read("ftdemo.loginValidatorField");
     private String valueWrongCredential = p.read("ftdemo.valueWrongCredential");
+    private String screenshotPath = p.read("selenium.screenshotPath");
+
 
     @Test
     public void checkLoadPage() throws MalformedURLException {
@@ -118,6 +120,21 @@ public class BasePageTests {
         logger.info(bp.clickElementBy(By.id(linkLogin)));
         bp.waitUntilActive(By.id(submitLogin));
         logger.info("Check for active element");
+        driver.quit();
+    }
+
+    @Test
+    public void checkGetScreenShot()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        try {
+            logger.info(bp.getScreenshot(screenshotPath));
+        } catch (Exception e) {
+            logger.info("Screenshot error" + e.toString());
+        }
         driver.quit();
     }
 }

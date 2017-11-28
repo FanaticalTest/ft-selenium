@@ -77,3 +77,11 @@ It waits until the element is active and return the element when ready
 BasePage bp = new BasePage(driver);
 bp.waitUntilActive(By.id("field-id-name"));
 ```
+
+### Get screenshot
+You can call the method when it requires. Let assume you want to store the picture in the test resources folder. 
+```
+BasePage bp = new BasePage(driver);
+bp.getScreenshot("./src/test/resources/");
+```
+

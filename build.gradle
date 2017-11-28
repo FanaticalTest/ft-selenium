@@ -38,6 +38,7 @@ dependencies {
 	compile("org.seleniumhq.selenium:selenium-api:${seleniumVersion}")
 	compile("org.seleniumhq.selenium:selenium-support:${seleniumVersion}")
 	compile("com.fanaticaltest:ft-config:${ftConfigVersion}")
+	compile("commons-io:commons-io:2.5")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile("org.seleniumhq.selenium:selenium-remote-driver:${seleniumVersion}")
 	testCompile("org.seleniumhq.selenium:selenium-api:${seleniumVersion}")

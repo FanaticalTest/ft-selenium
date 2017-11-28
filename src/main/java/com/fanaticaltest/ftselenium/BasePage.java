@@ -6,6 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Component;
+import java.io.File;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.OutputType;
+import org.apache.commons.io.FileUtils;
+import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -101,5 +107,15 @@ public class BasePage {
 
     public WebElement waitUntilActive(By by) {
         return new WebDriverWait(driver, timeoutInSecond).until(ExpectedConditions.presenceOfElementLocated(by));
+    }
+
+    public String getScreenshot(String screenshotPath) throws Exception {
+        SimpleDateFormat sdfScreenshot = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String pngFileName = sdfScreenshot.format(timestamp) + ".png";
+
+        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(scrFile, new File(screenshotPath + pngFileName));
+        return ("Screenshot taken " + screenshotPath + pngFileName);
     }
 }
