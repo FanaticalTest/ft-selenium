@@ -125,4 +125,16 @@ public class BasePage {
         select.selectByValue(value);
         return ("Value selected is " + value);
     }
+
+    public String selectDropDownByVisibleText(By by, String visibleText){
+        Select select = new Select(findElement(by));
+        select.selectByVisibleText(visibleText);
+        return ("Visible text selected is " + visibleText);
+    }
+
+    public String selectDropDownByIndex(By by, int index){
+        Select select = new Select(findElement(by));
+        select.selectByIndex(index);
+        return ("Visible text selected is " + index);
+    }
 }

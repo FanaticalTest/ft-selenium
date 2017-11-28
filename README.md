@@ -85,9 +85,21 @@ BasePage bp = new BasePage(driver);
 bp.getScreenshot("./src/test/resources/");
 ```
 
-### Select a value in a dropdown
-Select an item in the dropdown based on the value.
+### Select in a dropdown
+Select an item in the dropdown based on the value, here the value is `2`
 ```
 BasePage bp = new BasePage(driver);
-bp.selectDropDownByValue(By.id("qt-selector"),"2";
+bp.selectDropDownByValue(By.id("qt-selector"),"2");
+```
+
+Select an item in the dropdown based on the index, here we select the 3 rd value => index `2`
+```
+BasePage bp = new BasePage(driver);
+bp.selectDropDownByIndex(By.id(dropDownQtSelector),2);
+```
+
+Select an item in the dropdown based on the text, here the visible text is `4 pieces .
+```
+BasePage bp = new BasePage(driver);
+bp.selectDropDownByVisibleText(By.id(dropDownQtSelector),"4 pieces");
 ```

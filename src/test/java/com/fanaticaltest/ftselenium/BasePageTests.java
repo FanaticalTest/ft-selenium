@@ -149,6 +149,8 @@ public class BasePageTests {
         logger.info(bp.loadPage(ftdemoUrl));
         logger.info(bp.clickElementBy(By.id(linkShopping)));
         logger.info(bp.selectDropDownByValue(By.id(dropDownQtSelector),"2"));
+        logger.info(bp.selectDropDownByIndex(By.id(dropDownQtSelector),2));
+        logger.info(bp.selectDropDownByVisibleText(By.id(dropDownQtSelector),"4 pieces"));
         driver.quit();
     }
 }
