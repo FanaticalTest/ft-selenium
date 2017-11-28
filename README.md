@@ -103,3 +103,15 @@ Select an item in the dropdown based on the text, here the visible text is `4 pi
 BasePage bp = new BasePage(driver);
 bp.selectDropDownByVisibleText(By.id(dropDownQtSelector),"4 pieces");
 ```
+
+Get the selected value in the selected item
+```
+BasePage bp = new BasePage(driver);
+bp.getDropDownSelectedValue(By.id(dropDownQtSelector));
+```
+
+Get the selected value by attribute in the selected item
+```
+BasePage bp = new BasePage(driver);
+bp.getDropDownSelectedAttribute(By.id(dropDownQtSelector), "value");
+```

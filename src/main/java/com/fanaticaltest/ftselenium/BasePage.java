@@ -135,6 +135,16 @@ public class BasePage {
     public String selectDropDownByIndex(By by, int index){
         Select select = new Select(findElement(by));
         select.selectByIndex(index);
-        return ("Visible text selected is " + index);
+        return ("Index selected is " + index);
+    }
+
+    public String getDropDownSelectedAttribute(By by, String attribute){
+        Select select = new Select(findElement(by));
+        WebElement option = select.getFirstSelectedOption();
+        return option.getAttribute(attribute);
+    }
+
+    public String getDropDownSelectedValue(By by){
+        return getDropDownSelectedAttribute(by,"value");
     }
 }
