@@ -98,4 +98,8 @@ public class BasePage {
         assertThat(elem.getAttribute(attributeName), containsString(value));
         return ("Assert Attribute name " + attributeName + " in element " + by + " the value " + value);
     }
+
+    public WebElement waitUntilActive(By by) {
+        return new WebDriverWait(driver, timeoutInSecond).until(ExpectedConditions.presenceOfElementLocated(by));
+    }
 }

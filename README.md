@@ -70,3 +70,10 @@ Validate text in any non-standard attribute.
 BasePage bp = new BasePage(driver);
 bp.assertAttributeInElementBy("Attribute-name", "value-to-assert",By.id("field-id-name"))
 ```
+
+### Wait until element is present
+It waits until the element is active and return the element when ready
+```
+BasePage bp = new BasePage(driver);
+bp.waitUntilActive(By.id("field-id-name"));
+```

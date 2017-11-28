@@ -97,7 +97,7 @@ public class BasePageTests {
     }
 
     @Test
-    public  void checkAssertAttributeInElementBy()throws MalformedURLException
+    public void checkAssertAttributeInElementBy()throws MalformedURLException
     {
         capabilities = DesiredCapabilities.chrome();
         RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
@@ -105,6 +105,19 @@ public class BasePageTests {
         logger.info(bp.loadPage(ftdemoUrl));
         logger.info(bp.clickElementBy(By.id(linkLogin)));
         logger.info(bp.assertAttributeInElementBy("value","Login", By.id(submitLogin)));
+        driver.quit();
+    }
+
+    @Test
+    public void checkWaitUntilActive()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkLogin)));
+        bp.waitUntilActive(By.id(submitLogin));
+        logger.info("Check for active element");
         driver.quit();
     }
 }
