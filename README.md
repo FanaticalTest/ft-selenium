@@ -12,7 +12,10 @@ docker-compose up -d
 ```
 ./gradlew build
 ```
-
+Or something more all in one
+```
+docker-compose up -d && ./gradlew build  && docker-compose down
+```
 ### Install in local repository
 ```
 gradle install

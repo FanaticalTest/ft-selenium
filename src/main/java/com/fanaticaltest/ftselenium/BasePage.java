@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import java.text.SimpleDateFormat;
 import java.sql.Timestamp;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.interactions.Actions;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -120,6 +121,17 @@ public class BasePage {
         return ("Screenshot taken " + screenshotPath + pngFileName);
     }
 
+    public String getScreenshot(String screenshotPath, String fileNamePrefix) throws Exception {
+        SimpleDateFormat sdfScreenshot = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String pngFileName = fileNamePrefix + "-" +sdfScreenshot.format(timestamp) + ".png";
+
+        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(scrFile, new File(screenshotPath + pngFileName));
+        return ("Screenshot taken " + screenshotPath + pngFileName);
+    }
+
+
     public String selectDropDownByValue(By by, String value){
         Select select = new Select(findElement(by));
         select.selectByValue(value);
@@ -146,5 +158,26 @@ public class BasePage {
 
     public String getDropDownSelectedValue(By by){
         return getDropDownSelectedAttribute(by,"value");
+    }
+
+    public String getInnerHtmlValue(By by){
+        WebElement elem = findElement(by);
+        return elem.getAttribute("innerHTML");
+    }
+
+    public void mouseOverOneHop(By firstElem, By secondElem)
+    {
+        Actions action = new Actions(driver);
+        action.moveToElement(driver.findElement(firstElem)).moveToElement(driver.findElement(secondElem)).click().build().perform();
+    }
+
+    public String freezeProcess(long timeInSecond)
+    {
+        try {
+            Thread.sleep(timeInSecond*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ("Freezing process for "+timeInSecond+" seconds");
     }
 }

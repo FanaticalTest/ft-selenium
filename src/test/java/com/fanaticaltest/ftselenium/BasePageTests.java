@@ -13,6 +13,9 @@ import org.openqa.selenium.By;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -97,6 +100,7 @@ public class BasePageTests {
         logger.info(bp.clickElementBy(By.id(linkLogin)));
         logger.info(bp.clickElementBy(By.id(submitLogin)));
         logger.info(bp.waitAndAssertTextInElementBy(valueWrongCredential,By.id(loginValidatorField)));
+        assertThat(bp.getInnerHtmlValue(By.id(loginValidatorField)), containsString(valueWrongCredential));
         driver.quit();
     }
 
@@ -134,6 +138,7 @@ public class BasePageTests {
         logger.info(bp.loadPage(ftdemoUrl));
         try {
             logger.info(bp.getScreenshot(screenshotPath));
+            logger.info(bp.getScreenshot(screenshotPath, "test"));
         } catch (Exception e) {
             logger.info("Screenshot error" + e.toString());
         }
