@@ -139,6 +139,7 @@ public class BasePageTests {
         try {
             logger.info(bp.getScreenshot(screenshotPath));
             logger.info(bp.getScreenshot(screenshotPath, "test"));
+            logger.info(bp.getScreenshot(screenshotPath, "test-no-timestamp", true));
         } catch (Exception e) {
             logger.info("Screenshot error" + e.toString());
         }

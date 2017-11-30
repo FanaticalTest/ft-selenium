@@ -111,10 +111,21 @@ public class BasePage {
         return new WebDriverWait(driver, timeoutInSecond).until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
-    public String getScreenshot(String screenshotPath) throws Exception {
+    private String getScreenshot (String screenshotPath, String fileName, boolean noPrefix, boolean noTimestamp) throws Exception {
         SimpleDateFormat sdfScreenshot = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String pngFileName = sdfScreenshot.format(timestamp) + ".png";
+        String pngFileName;
+
+        if (noPrefix == true) {
+            pngFileName = sdfScreenshot.format(timestamp) + ".png";
+        }
+        else if (noTimestamp == true)
+        {
+            pngFileName = fileName + ".png";
+        }
+        else {
+            pngFileName = fileName + "-" + sdfScreenshot.format(timestamp) + ".png";
+        }
 
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(scrFile, new File(screenshotPath + pngFileName));
@@ -122,13 +133,15 @@ public class BasePage {
     }
 
     public String getScreenshot(String screenshotPath, String fileNamePrefix) throws Exception {
-        SimpleDateFormat sdfScreenshot = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String pngFileName = fileNamePrefix + "-" +sdfScreenshot.format(timestamp) + ".png";
+        return (getScreenshot(screenshotPath, fileNamePrefix, false, false));
+    }
 
-        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        FileUtils.copyFile(scrFile, new File(screenshotPath + pngFileName));
-        return ("Screenshot taken " + screenshotPath + pngFileName);
+    public String getScreenshot(String screenshotPath) throws Exception {
+        return (getScreenshot(screenshotPath, "empty", true, false));
+    }
+
+    public String getScreenshot(String screenshotPath, String fileNamePrefix, boolean noTimestamp) throws Exception {
+        return (getScreenshot(screenshotPath, fileNamePrefix, false, noTimestamp));
     }
 
 

@@ -85,7 +85,12 @@ bp.waitUntilActive(By.id("field-id-name"));
 You can call the method when it requires. Let assume you want to store the picture in the test resources folder. The file name will contains a timestamp.
 ```
 BasePage bp = new BasePage(driver);
+// without prefix  but with timestamp
 bp.getScreenshot("./src/test/resources/");
+// with prefix
+bp.getScreenshot("./src/test/resources/", "prefix-value");
+// without timestamp
+bp.getScreenshot("./src/test/resources/", "filename-value", true);
 ```
 
 ### Select in a dropdown
@@ -117,4 +122,11 @@ Get the selected value by attribute in the selected item
 ```
 BasePage bp = new BasePage(driver);
 bp.getDropDownSelectedAttribute(By.id(dropDownQtSelector), "value");
+```
+
+### Get text inside html tag
+If you need to get whole string between 2 html tag
+```
+BasePage bp = new BasePage(driver);
+bp.getInnerHtmlValue(By.id("html-field-id"));
 ```
