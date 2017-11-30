@@ -111,15 +111,15 @@ public class BasePage {
         return new WebDriverWait(driver, timeoutInSecond).until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
-    private String getScreenshot (String screenshotPath, String fileName, boolean noPrefix, boolean noTimestamp) throws Exception {
+    private String getScreenshot (String screenshotPath, String fileName, boolean hasPrefix, boolean hasTimestamp) throws Exception {
         SimpleDateFormat sdfScreenshot = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String pngFileName;
 
-        if (noPrefix == true) {
+        if (hasPrefix == false) {
             pngFileName = sdfScreenshot.format(timestamp) + ".png";
         }
-        else if (noTimestamp == true)
+        else if (hasTimestamp == false)
         {
             pngFileName = fileName + ".png";
         }
@@ -133,15 +133,15 @@ public class BasePage {
     }
 
     public String getScreenshot(String screenshotPath, String fileNamePrefix) throws Exception {
-        return (getScreenshot(screenshotPath, fileNamePrefix, false, false));
+        return (getScreenshot(screenshotPath, fileNamePrefix, true, true));
     }
 
     public String getScreenshot(String screenshotPath) throws Exception {
-        return (getScreenshot(screenshotPath, "empty", true, false));
+        return (getScreenshot(screenshotPath, "empty", false, true));
     }
 
-    public String getScreenshot(String screenshotPath, String fileNamePrefix, boolean noTimestamp) throws Exception {
-        return (getScreenshot(screenshotPath, fileNamePrefix, false, noTimestamp));
+    public String getScreenshot(String screenshotPath, String fileNamePrefix, boolean hasTimestamp) throws Exception {
+        return (getScreenshot(screenshotPath, fileNamePrefix, true, hasTimestamp));
     }
 
 

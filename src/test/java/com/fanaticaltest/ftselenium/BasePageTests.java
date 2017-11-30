@@ -47,6 +47,7 @@ public class BasePageTests {
         RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
         BasePage bp = new BasePage(driver,timeoutInSecond );
         logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.freezeProcess(2L));
         driver.quit();
     }
 
@@ -139,7 +140,7 @@ public class BasePageTests {
         try {
             logger.info(bp.getScreenshot(screenshotPath));
             logger.info(bp.getScreenshot(screenshotPath, "test"));
-            logger.info(bp.getScreenshot(screenshotPath, "test-no-timestamp", true));
+            logger.info(bp.getScreenshot(screenshotPath, "test-no-timestamp", false));
         } catch (Exception e) {
             logger.info("Screenshot error" + e.toString());
         }

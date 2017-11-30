@@ -130,3 +130,11 @@ If you need to get whole string between 2 html tag
 BasePage bp = new BasePage(driver);
 bp.getInnerHtmlValue(By.id("html-field-id"));
 ```
+
+### Freeze test process
+Just for continence, but not recommended except for work around you could pause a test a some seconds.
+In this example we wait for 2 seconds. The L is to convert the value in Long.
+```
+BasePage bp = new BasePage(driver);
+bp.freezeProcess(2L);
+```
