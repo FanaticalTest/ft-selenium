@@ -21,6 +21,11 @@ docker-compose up -d && ./gradlew build  && docker-compose down
 gradle install
 ```
 
+### Run  a single test
+```
+gradle -Dtest.single=*checkMouseOver test
+```
+
 ## Use the library
 
 Mainly we use By to access an element. We could use id, xpath, name, etc. Here in the example we use only id, but it could be any other attribute.
@@ -137,4 +142,11 @@ In this example we wait for 2 seconds. The L is to convert the value in Long.
 ```
 BasePage bp = new BasePage(driver);
 bp.freezeProcess(2L);
+```
+
+### Mouse over
+If you need to interact with menu or something similar and need to navigate to one node bellow
+```
+BasePage bp = new BasePage(driver);
+bp.mouseOverOneHop(By.id("first-elem"),By.id("second-elem"));
 ```

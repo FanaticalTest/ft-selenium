@@ -39,6 +39,8 @@ public class BasePageTests {
     private String valueWrongCredential = p.read("ftdemo.valueWrongCredential");
     private String screenshotPath = p.read("selenium.screenshotPath");
     private String dropDownQtSelector = p.read("ftdemo.dropDownQtSelector");
+    private String linkMenu = p.read("ftdemo.linkMenu");
+    private String buttonDropdown = p.read("ftdemo-buttonDropdown");
 
 
     @Test
@@ -159,6 +161,18 @@ public class BasePageTests {
         logger.info(bp.getDropDownSelectedValue(By.id(dropDownQtSelector)));
         logger.info(bp.selectDropDownByIndex(By.id(dropDownQtSelector),2));
         logger.info(bp.selectDropDownByVisibleText(By.id(dropDownQtSelector),"4 pieces"));
+        driver.quit();
+    }
+
+    @Test
+    public void checkMouseOver()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkMenu)));
+        logger.info(bp.mouseOverOneHop(By.id(buttonDropdown),By.id(linkLogin)));
         driver.quit();
     }
 }

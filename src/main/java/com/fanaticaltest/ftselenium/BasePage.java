@@ -178,10 +178,11 @@ public class BasePage {
         return elem.getAttribute("innerHTML");
     }
 
-    public void mouseOverOneHop(By firstElem, By secondElem)
+    public String mouseOverOneHop(By firstElem, By secondElem)
     {
         Actions action = new Actions(driver);
         action.moveToElement(driver.findElement(firstElem)).moveToElement(driver.findElement(secondElem)).click().build().perform();
+        return ("Move over " + firstElem + " and move to " + secondElem);
     }
 
     public String freezeProcess(long timeInSecond)
