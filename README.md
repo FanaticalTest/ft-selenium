@@ -1,5 +1,13 @@
 # ft-selenium
 
+## Pre requirements
+- com.fanaticaltest:ft-config:0.1.0
+- org.seleniumhq.selenium:selenium-remote-driver:3.7.1
+- org.seleniumhq.selenium:selenium-api:3.7.1
+- org.seleniumhq.selenium:selenium-support:3.7.1
+- commons-io:commons-io:2.5
+- org.hamcrest:hamcrest-core:1.3
+
 ## Run
 
 ### Start selenium
@@ -19,11 +27,6 @@ docker-compose up -d && ./gradlew build  && docker-compose down
 ### Install in local repository
 ```
 gradle install
-```
-
-### Run  a single test
-```
-gradle -Dtest.single=*checkMouseOver test
 ```
 
 ## Use the library
