@@ -13,6 +13,9 @@ import org.openqa.selenium.By;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,7 +28,8 @@ public class BasePageTests {
     private long timeoutInSecond = Long.parseLong(p.read("selenium.timeout"), 10);
     private String ftdemoUrl = p.read("ftdemo.urlHome");
     private String ftdemoHomeTitle = p.read("ftdemo.homeTitle");
-    private String linkLogin= p.read("ftdemo.linkLogin");
+    private String linkLogin = p.read("ftdemo.linkLogin");
+    private String linkShopping = p.read("ftdemo.linkShopping");
     private String usernameValue = p.read("ftdemo.usernameValue");
     private String passwordValue = p.read("ftdemo.passwordValue");
     private String usernameField = p.read("ftdemo.usernameField");
@@ -33,6 +37,11 @@ public class BasePageTests {
     private String submitLogin = p.read("ftdemo.submitLogin");
     private String loginValidatorField = p.read("ftdemo.loginValidatorField");
     private String valueWrongCredential = p.read("ftdemo.valueWrongCredential");
+    private String screenshotPath = p.read("selenium.screenshotPath");
+    private String dropDownQtSelector = p.read("ftdemo.dropDownQtSelector");
+    private String linkMenu = p.read("ftdemo.linkMenu");
+    private String buttonDropdown = p.read("ftdemo-buttonDropdown");
+
 
     @Test
     public void checkLoadPage() throws MalformedURLException {
@@ -40,6 +49,7 @@ public class BasePageTests {
         RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
         BasePage bp = new BasePage(driver,timeoutInSecond );
         logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.freezeProcess(2L));
         driver.quit();
     }
 
@@ -93,11 +103,12 @@ public class BasePageTests {
         logger.info(bp.clickElementBy(By.id(linkLogin)));
         logger.info(bp.clickElementBy(By.id(submitLogin)));
         logger.info(bp.waitAndAssertTextInElementBy(valueWrongCredential,By.id(loginValidatorField)));
+        assertThat(bp.getInnerHtmlValue(By.id(loginValidatorField)), containsString(valueWrongCredential));
         driver.quit();
     }
 
     @Test
-    public  void checkAssertAttributeInElementBy()throws MalformedURLException
+    public void checkAssertAttributeInElementBy()throws MalformedURLException
     {
         capabilities = DesiredCapabilities.chrome();
         RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
@@ -105,6 +116,63 @@ public class BasePageTests {
         logger.info(bp.loadPage(ftdemoUrl));
         logger.info(bp.clickElementBy(By.id(linkLogin)));
         logger.info(bp.assertAttributeInElementBy("value","Login", By.id(submitLogin)));
+        driver.quit();
+    }
+
+    @Test
+    public void checkWaitUntilActive()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkLogin)));
+        bp.waitUntilActive(By.id(submitLogin));
+        logger.info("Check for active element");
+        driver.quit();
+    }
+
+    @Test
+    public void checkGetScreenShot()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        try {
+            logger.info(bp.getScreenshot(screenshotPath));
+            logger.info(bp.getScreenshot(screenshotPath, "test"));
+            logger.info(bp.getScreenshot(screenshotPath, "test-no-timestamp", false));
+        } catch (Exception e) {
+            logger.info("Screenshot error" + e.toString());
+        }
+        driver.quit();
+    }
+
+    @Test
+    public void checkDropDown()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkShopping)));
+        logger.info(bp.selectDropDownByValue(By.id(dropDownQtSelector),"2"));
+        logger.info(bp.getDropDownSelectedValue(By.id(dropDownQtSelector)));
+        logger.info(bp.selectDropDownByIndex(By.id(dropDownQtSelector),2));
+        logger.info(bp.selectDropDownByVisibleText(By.id(dropDownQtSelector),"4 pieces"));
+        driver.quit();
+    }
+
+    @Test
+    public void checkMouseOver()throws MalformedURLException
+    {
+        capabilities = DesiredCapabilities.chrome();
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(remoteDriverUrl), capabilities);
+        BasePage bp = new BasePage(driver);
+        logger.info(bp.loadPage(ftdemoUrl));
+        logger.info(bp.clickElementBy(By.id(linkMenu)));
+        logger.info(bp.mouseOverOneHop(By.id(buttonDropdown),By.id(linkLogin)));
         driver.quit();
     }
 }

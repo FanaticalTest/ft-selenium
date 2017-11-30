@@ -12,10 +12,18 @@ docker-compose up -d
 ```
 ./gradlew build
 ```
-
+Or something more all in one
+```
+docker-compose up -d && ./gradlew build  && docker-compose down
+```
 ### Install in local repository
 ```
 gradle install
+```
+
+### Run  a single test
+```
+gradle -Dtest.single=*checkMouseOver test
 ```
 
 ## Use the library
@@ -69,4 +77,76 @@ Validate text in any non-standard attribute.
 ```
 BasePage bp = new BasePage(driver);
 bp.assertAttributeInElementBy("Attribute-name", "value-to-assert",By.id("field-id-name"))
+```
+
+### Wait until element is present
+It waits until the element is active and return the element when ready
+```
+BasePage bp = new BasePage(driver);
+bp.waitUntilActive(By.id("field-id-name"));
+```
+
+### Get screenshot
+You can call the method when it requires. Let assume you want to store the picture in the test resources folder. The file name will contains a timestamp.
+```
+BasePage bp = new BasePage(driver);
+// without prefix  but with timestamp
+bp.getScreenshot("./src/test/resources/");
+// with prefix
+bp.getScreenshot("./src/test/resources/", "prefix-value");
+// without timestamp
+bp.getScreenshot("./src/test/resources/", "filename-value", true);
+```
+
+### Select in a dropdown
+Select an item in the dropdown based on the value, here the value is `2`
+```
+BasePage bp = new BasePage(driver);
+bp.selectDropDownByValue(By.id("qt-selector"),"2");
+```
+
+Select an item in the dropdown based on the index, here we select the 3 rd value => index `2`
+```
+BasePage bp = new BasePage(driver);
+bp.selectDropDownByIndex(By.id(dropDownQtSelector),2);
+```
+
+Select an item in the dropdown based on the text, here the visible text is `4 pieces .
+```
+BasePage bp = new BasePage(driver);
+bp.selectDropDownByVisibleText(By.id(dropDownQtSelector),"4 pieces");
+```
+
+Get the selected value in the selected item
+```
+BasePage bp = new BasePage(driver);
+bp.getDropDownSelectedValue(By.id(dropDownQtSelector));
+```
+
+Get the selected value by attribute in the selected item
+```
+BasePage bp = new BasePage(driver);
+bp.getDropDownSelectedAttribute(By.id(dropDownQtSelector), "value");
+```
+
+### Get text inside html tag
+If you need to get whole string between 2 html tag
+```
+BasePage bp = new BasePage(driver);
+bp.getInnerHtmlValue(By.id("html-field-id"));
+```
+
+### Freeze test process
+Just for continence, but not recommended except for work around you could pause a test a some seconds.
+In this example we wait for 2 seconds. The L is to convert the value in Long.
+```
+BasePage bp = new BasePage(driver);
+bp.freezeProcess(2L);
+```
+
+### Mouse over
+If you need to interact with menu or something similar and need to navigate to one node bellow
+```
+BasePage bp = new BasePage(driver);
+bp.mouseOverOneHop(By.id("first-elem"),By.id("second-elem"));
 ```

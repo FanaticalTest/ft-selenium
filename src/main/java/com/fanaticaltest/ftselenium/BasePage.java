@@ -6,6 +6,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Component;
+import java.io.File;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.OutputType;
+import org.apache.commons.io.FileUtils;
+import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.interactions.Actions;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -97,5 +105,93 @@ public class BasePage {
         WebElement elem = findElement(by);
         assertThat(elem.getAttribute(attributeName), containsString(value));
         return ("Assert Attribute name " + attributeName + " in element " + by + " the value " + value);
+    }
+
+    public WebElement waitUntilActive(By by) {
+        return new WebDriverWait(driver, timeoutInSecond).until(ExpectedConditions.presenceOfElementLocated(by));
+    }
+
+    private String getScreenshot (String screenshotPath, String fileName, boolean hasPrefix, boolean hasTimestamp) throws Exception {
+        SimpleDateFormat sdfScreenshot = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String pngFileName;
+
+        if (hasPrefix == false) {
+            pngFileName = sdfScreenshot.format(timestamp) + ".png";
+        }
+        else if (hasTimestamp == false)
+        {
+            pngFileName = fileName + ".png";
+        }
+        else {
+            pngFileName = fileName + "-" + sdfScreenshot.format(timestamp) + ".png";
+        }
+
+        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(scrFile, new File(screenshotPath + pngFileName));
+        return ("Screenshot taken " + screenshotPath + pngFileName);
+    }
+
+    public String getScreenshot(String screenshotPath, String fileNamePrefix) throws Exception {
+        return (getScreenshot(screenshotPath, fileNamePrefix, true, true));
+    }
+
+    public String getScreenshot(String screenshotPath) throws Exception {
+        return (getScreenshot(screenshotPath, "empty", false, true));
+    }
+
+    public String getScreenshot(String screenshotPath, String fileNamePrefix, boolean hasTimestamp) throws Exception {
+        return (getScreenshot(screenshotPath, fileNamePrefix, true, hasTimestamp));
+    }
+
+
+    public String selectDropDownByValue(By by, String value){
+        Select select = new Select(findElement(by));
+        select.selectByValue(value);
+        return ("Value selected is " + value);
+    }
+
+    public String selectDropDownByVisibleText(By by, String visibleText){
+        Select select = new Select(findElement(by));
+        select.selectByVisibleText(visibleText);
+        return ("Visible text selected is " + visibleText);
+    }
+
+    public String selectDropDownByIndex(By by, int index){
+        Select select = new Select(findElement(by));
+        select.selectByIndex(index);
+        return ("Index selected is " + index);
+    }
+
+    public String getDropDownSelectedAttribute(By by, String attribute){
+        Select select = new Select(findElement(by));
+        WebElement option = select.getFirstSelectedOption();
+        return option.getAttribute(attribute);
+    }
+
+    public String getDropDownSelectedValue(By by){
+        return getDropDownSelectedAttribute(by,"value");
+    }
+
+    public String getInnerHtmlValue(By by){
+        WebElement elem = findElement(by);
+        return elem.getAttribute("innerHTML");
+    }
+
+    public String mouseOverOneHop(By firstElem, By secondElem)
+    {
+        Actions action = new Actions(driver);
+        action.moveToElement(driver.findElement(firstElem)).moveToElement(driver.findElement(secondElem)).click().build().perform();
+        return ("Move over " + firstElem + " and move to " + secondElem);
+    }
+
+    public String freezeProcess(long timeInSecond)
+    {
+        try {
+            Thread.sleep(timeInSecond*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ("Freezing process for "+timeInSecond+" seconds");
     }
 }
