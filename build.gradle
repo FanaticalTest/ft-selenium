@@ -2,8 +2,8 @@ buildscript {
 	ext {
 		springBootVersion = '1.5.8.RELEASE'
 		seleniumVersion = '3.7.1'
-		ftConfigVersion = '0.1.0'
-		libVersion = '0.1.0'
+		ftConfigVersion = '0.1.1'
+		libVersion = '0.1.1'
 	}
 	repositories {
 		mavenCentral()
