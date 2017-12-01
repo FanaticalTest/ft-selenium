@@ -2,13 +2,10 @@ package com.fanaticaltest.ftselenium;
 
 import com.fanaticaltest.ftconfig.Property;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.openqa.selenium.By;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,8 +14,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class BasePageTests {
 
     private Property p = new Property("./src/main/resources/application.properties");
